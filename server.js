@@ -1,8 +1,11 @@
 var express = require('express');
 var app = express();
+var cors = require('cors');
 var bodyParser = require('body-parser');
 var Sequelize = require('sequelize');
 var config = require('./config.js');
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -39,11 +42,30 @@ app.get('/api/votes', function (req, res) {
 /// GET VOTE BY value ///
 app.get('/api/votes/:value', function (req, res) {
 
-    Vote.find({
+    Vote.findAll({
         where: {
             value: req.params.value
         }
     }).then((votes) => votes ? res.json(votes) : res.status(404).json({error: 'no votes found'}))
+});
+
+/// PATH to reset votes ///
+app.get('/api/reset', function (req, res) {
+
+    Vote.destroy({
+        where: {},
+        truncate: true
+      }).then(() => {
+        for (let i = 0; i < 5; i++) {
+            Vote.create({value: 'trebuchet'})
+        }
+
+        for (let i = 0; i < 5; i++) {
+            Vote.create({value: 'catapult'})
+        }
+
+        return res.json({reset: 'ok'});
+      });
 });
 
 /// POST NEW VOTE ///

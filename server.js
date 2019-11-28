@@ -2,11 +2,12 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var Sequelize = require('sequelize');
+var config = require('./config.js');
 
 app.use(bodyParser.json());
 
 //Connect to mySQL
-const sequelize = new Sequelize('mysql://root:root@localhost:3306/vote-db', {sync: true});
+const sequelize = new Sequelize(`mysql://${config.DB_USERNAME}:${config.DB_PASSWORD}@${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}`, {sync: true});
 
 //Let's checkout connection
 sequelize

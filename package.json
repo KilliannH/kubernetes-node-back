@@ -1,7 +1,7 @@
 {
-  "name": "docker-backend",
+  "name": "mymusic-app-backend",
   "version": "1.0.0",
-  "description": "a node backend for kubernetes app",
+  "description": "a node backend for mymusic app",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

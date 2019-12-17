@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/docker-backend.iml" filepath="$PROJECT_DIR$/.idea/docker-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mymusic-app-backend.iml" filepath="$PROJECT_DIR$/.idea/mymusic-app-backend.iml" />
     </modules>
   </component>
 </project>

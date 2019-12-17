@@ -23,8 +23,14 @@ sequelize
     });
 
 //Init model (in this same file because it's a simple single page app)
-const Vote = sequelize.define('vote', {
-    value: {
+const Song = sequelize.define('song', {
+    title: {
+        type: Sequelize.STRING
+    },
+    artist: {
+        type: Sequelize.STRING
+    },
+    album_img_url: {
         type: Sequelize.STRING
     }
 }, {timestamps: false});
@@ -32,59 +38,52 @@ const Vote = sequelize.define('vote', {
 /////////////// For VOTES ///////////////
 
 /// DEFAULT GET HERE ///
-app.get('/api/votes', function (req, res) {
+app.get('/api/songs', function (req, res) {
 
-    Vote.findAll().then(votes => {
-        res.json(votes)
-    })
+    Song.findAll().then(songs => {
+        res.json(songs)
+    });
 });
 
-/// GET VOTE BY value ///
-app.get('/api/votes/:value', function (req, res) {
+/// GET SONGS BY title ///
+app.get('/api/songs/:title', function (req, res) {
 
-    Vote.findAll({
+    Song.findAll({
         where: {
-            value: req.params.value
+            title: req.params.title
         }
-    }).then((votes) => votes ? res.json(votes) : res.status(404).json({error: 'no votes found'}))
+    }).then((songs) => songs ? res.json(songs) : res.status(404).json({error: 'no songs found'}))
 });
 
-/// PATH to reset votes ///
-app.get('/api/reset', function (req, res) {
+/// GET SONGS BY id ///
+app.get('/api/songs/:id', function (req, res) {
 
-    Vote.destroy({
-        where: {},
-        truncate: true
-      }).then(() => {
-        for (let i = 0; i < 5; i++) {
-            Vote.create({value: 'trebuchet'})
-        }
-
-        for (let i = 0; i < 5; i++) {
-            Vote.create({value: 'catapult'})
-        }
-
-        return res.json({reset: 'ok'});
-      });
-});
-
-/// POST NEW VOTE ///
-app.post('/api/votes/', function (req, res) {
-
-    Vote.create({
-        value: req.body.value
-    }).then((vote) => res.json(vote))
-});
-
-/// DELETE RECIPE ///
-app.delete('/api/votes/:id', function (req, res) {
-
-    Vote.destroy({
+    Song.findOne({
         where: {
             id: req.params.id
         }
-    }).then((vote) => vote ? res.json(vote) : res.status(404).json({error: 'unknown vote wi id : ' + req.params.id}))
+    }).then((song) => song ? res.json(song) : res.status(404).json({error: 'no song found'}))
 });
 
-app.listen(9000);
-console.log('Running on port 9000...');
+/// POST NEW SONG ///
+app.post('/api/songs/', function (req, res) {
+
+    Song.create({
+        title: req.body.title,
+        artist: req.body.artist,
+        album_img_url: req.body.album_img_url
+    }).then((song) => res.json(song))
+});
+
+/// DELETE SONG ///
+app.delete('/api/songs/:id', function (req, res) {
+
+    Song.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then((song) => song ? res.json(song) : res.status(404).json({error: 'unknown song with id : ' + req.params.id}))
+});
+
+app.listen(3000);
+console.log('Running on port 3000...');
